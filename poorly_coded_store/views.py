@@ -13,4 +13,16 @@ def checkout(request):
     total_charge = quantity_from_form * price_from_form
     print("Charging credit card...")
     Order.objects.create(quantity_ordered=quantity_from_form, total_price=total_charge)
-    return render(request, "store/checkout.html")
+    orders_temp = Order.objects.all()
+    all_orders = 0
+    for orders in orders_temp:
+        all_orders += 1
+    orders_sum = 0
+    for orders in orders_temp:
+        orders_sum += orders.total_price 
+    context = {
+        "orderinfo" : total_charge,
+        "ordercount" : all_orders, 
+        "ordertotal" : orders_sum,
+    }
+    return render(request, "store/checkout.html", context)
